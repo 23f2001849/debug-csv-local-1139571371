@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Reader</title>
+    <style>
+        body {
+            padding: 2em;
+            font-family: Arial, sans-serif;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 1em;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>CSV Reader</h1>
+    <table id="csvTable">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <script>
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', 'products.csv');
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState === 4 && xhr.status === 200) {
+                var lines = xhr.responseText.split('\n');
+                var tableBody = document.querySelector('#csvTable tbody');
+                for (var i = 1; i < lines.length; i++) {
+                    var row = document.createElement('tr');
+                    var cells = lines[i].split(',');
+                    for (var j = 0; j < cells.length; j++) {
+                        var cell = document.createElement('td');
+                        cell.textContent = cells[j];
+                        row.appendChild(cell);
+                    }
+                    tableBody.appendChild(row);
+                }
+            }
+        };
+        xhr.send();
+    </script>
+</body>
+</html>
